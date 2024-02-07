@@ -1,4 +1,6 @@
-package baksakcci.shoppingmall.domain.entity;
+package baksakcci.shoppingmall.order.domain.entity;
+
+import baksakcci.shoppingmall.catalog.domain.entity.Product;
 
 public class OrderItem {
 

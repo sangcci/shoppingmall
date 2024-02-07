@@ -1,4 +1,4 @@
-package baksakcci.shoppingmall.domain.entity;
+package baksakcci.shoppingmall.catalog.domain.entity;
 
 import java.time.LocalDate;
 import lombok.Getter;

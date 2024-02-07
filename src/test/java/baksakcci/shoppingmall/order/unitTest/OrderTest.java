@@ -1,11 +1,11 @@
-package baksakcci.shoppingmall;
+package baksakcci.shoppingmall.order.unitTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import baksakcci.shoppingmall.domain.entity.Order;
-import baksakcci.shoppingmall.domain.entity.OrderItem;
-import baksakcci.shoppingmall.domain.entity.Product;
+import baksakcci.shoppingmall.order.domain.entity.Order;
+import baksakcci.shoppingmall.order.domain.entity.OrderItem;
+import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

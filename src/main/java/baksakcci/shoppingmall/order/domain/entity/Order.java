@@ -1,5 +1,6 @@
-package baksakcci.shoppingmall.domain.entity;
+package baksakcci.shoppingmall.order.domain.entity;
 
+import baksakcci.shoppingmall.member.domain.entity.User;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
