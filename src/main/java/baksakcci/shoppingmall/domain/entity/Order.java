@@ -13,12 +13,17 @@ public class Order {
 
     // constructor
     public Order(List<OrderItem> orderItems) {
+        setOrderItems(orderItems);
+        this.orderAt = LocalDateTime.now();
+    }
+
+    private void setOrderItems(List<OrderItem> orderItems) {
         verifyAtLeastOneOrMoreOrderItems(orderItems);
         this.orderItems = orderItems;
         calculateTotalPrice();
     }
 
-    // method, role
+    // method, role, utility
     public void changeShipped() {}
     public void changeShippingInfo() {}
     public void cancel() {}
