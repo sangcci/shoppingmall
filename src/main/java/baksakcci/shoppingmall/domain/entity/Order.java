@@ -2,11 +2,13 @@ package baksakcci.shoppingmall.domain.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Getter;
 
 public class Order {
 
     private long id;
     private List<OrderItem> orderItems;
+    @Getter
     private int totalPrice;
     private LocalDateTime orderAt;
     private User user;
