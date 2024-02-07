@@ -31,15 +31,17 @@ public class OrderTest {
             // when
             Order order = new Order(orderItems);
 
+            // then
             assertThat(order).isInstanceOf(Order.class);
-
         }
 
         @Test
         @DisplayName("[EXCEPTION] 상품 리스트에 아무것도 없을 경우 예외 발생")
         void orderItems_emptyOrNull_throwException() {
+            // give
             ArrayList<OrderItem> orderItems = new ArrayList<>();
 
+            // when & then
             assertThatThrownBy(() -> new Order(orderItems))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("no order items.");
@@ -61,6 +63,8 @@ public class OrderTest {
 
             // when
             Order order = new Order(orderItems);
+
+            // then
             assertThat(order.getTotalPrice()).isEqualTo(10000 * 3 + 15000 * 4);
         }
     }
