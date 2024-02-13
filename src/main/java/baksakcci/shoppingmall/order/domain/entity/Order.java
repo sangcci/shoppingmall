@@ -11,12 +11,14 @@ public class Order {
     private List<OrderItem> orderItems;
     @Getter
     private int totalPrice;
+    private DeliveryInfo deliveryInfo;
     private LocalDateTime orderAt;
     private User user;
 
     // constructor
-    public Order(List<OrderItem> orderItems) {
+    public Order(List<OrderItem> orderItems, DeliveryInfo deliveryInfo) {
         setOrderItems(orderItems);
+        setDeliveryInfo(deliveryInfo);
         this.orderAt = LocalDateTime.now();
     }
 
@@ -24,6 +26,11 @@ public class Order {
         verifyAtLeastOneOrMoreOrderItems(orderItems);
         this.orderItems = orderItems;
         calculateTotalPrice();
+    }
+
+    private void setDeliveryInfo(DeliveryInfo deliveryInfo) {
+        verifyNullDeliveryInfo(deliveryInfo);
+        this.deliveryInfo = deliveryInfo;
     }
 
     // method, role, utility
@@ -42,6 +49,12 @@ public class Order {
         // exception handler
         if (orderItems == null || orderItems.isEmpty()) {
             throw new IllegalArgumentException("no order items.");
+        }
+    }
+
+    private void verifyNullDeliveryInfo(DeliveryInfo deliveryInfo) {
+        if (deliveryInfo == null) {
+            throw new IllegalArgumentException("no delivery info.");
         }
     }
 
