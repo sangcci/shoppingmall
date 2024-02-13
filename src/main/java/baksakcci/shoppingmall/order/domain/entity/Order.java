@@ -12,15 +12,32 @@ public class Order {
     @Getter
     private int totalPrice;
     private DeliveryInfo deliveryInfo;
+    private OrderState orderState;
     private LocalDateTime orderAt;
     private User user;
 
     // constructor
-    public Order(List<OrderItem> orderItems, DeliveryInfo deliveryInfo) {
+    public Order(List<OrderItem> orderItems, DeliveryInfo deliveryInfo, OrderState orderState) {
         setOrderItems(orderItems);
         setDeliveryInfo(deliveryInfo);
+        this.orderState = orderState;
         this.orderAt = LocalDateTime.now();
     }
+
+    // method, role, utility
+    public void changeShipped() {}
+
+    public void changeShippingInfo(DeliveryInfo deliveryInfo) {
+        verifyIsPAYMENT_WAITING();
+        setDeliveryInfo(deliveryInfo);
+    }
+
+    public void cancel() {
+        verifyIsPAYMENT_WAITING();
+        this.orderState = OrderState.CANCELED;
+    }
+
+    public void completePayment() {}
 
     private void setOrderItems(List<OrderItem> orderItems) {
         verifyAtLeastOneOrMoreOrderItems(orderItems);
@@ -33,11 +50,6 @@ public class Order {
         this.deliveryInfo = deliveryInfo;
     }
 
-    // method, role, utility
-    public void changeShipped() {}
-    public void changeShippingInfo() {}
-    public void cancel() {}
-    public void completePayment() {}
     private void calculateTotalPrice() {
         this.totalPrice = orderItems.stream()
                 .mapToInt(OrderItem::calculateAmounts)
@@ -55,6 +67,12 @@ public class Order {
     private void verifyNullDeliveryInfo(DeliveryInfo deliveryInfo) {
         if (deliveryInfo == null) {
             throw new IllegalArgumentException("no delivery info.");
+        }
+    }
+
+    private void verifyIsPAYMENT_WAITING() {
+        if (orderState != OrderState.PAYMENT_WAITING && orderState != OrderState.ITEM_PREPARING) {
+            throw new IllegalStateException("already Shipped");
         }
     }
 

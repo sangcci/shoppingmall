@@ -1,12 +1,14 @@
 package baksakcci.shoppingmall.order.unitTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import baksakcci.shoppingmall.order.domain.entity.DeliveryInfo;
 import baksakcci.shoppingmall.order.domain.entity.Order;
 import baksakcci.shoppingmall.order.domain.entity.OrderItem;
 import baksakcci.shoppingmall.catalog.domain.entity.Product;
+import baksakcci.shoppingmall.order.domain.entity.OrderState;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +41,7 @@ public class OrderTest {
                     "1201호");
 
             // when
-            Order order = new Order(orderItems, deliveryInfo);
+            Order order = new Order(orderItems, deliveryInfo, OrderState.PAYMENT_WAITING);
 
             // then
             assertThat(order).isInstanceOf(Order.class);
@@ -76,7 +78,7 @@ public class OrderTest {
         @MethodSource("provideOrders")
         void orderItems_emptyOrNull_throwException(String message, ArrayList<OrderItem> orderItems, DeliveryInfo deliveryInfo) {
             // when & then
-            assertThatThrownBy(() -> new Order(orderItems, deliveryInfo))
+            assertThatThrownBy(() -> new Order(orderItems, deliveryInfo, OrderState.PAYMENT_WAITING))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage(message);
         }
@@ -101,10 +103,48 @@ public class OrderTest {
                     "1201호");
 
             // when
-            Order order = new Order(orderItems, deliveryInfo);
+            Order order = new Order(orderItems, deliveryInfo, OrderState.CANCELED);
 
             // then
             assertThat(order.getTotalPrice()).isEqualTo(10000 * 3 + 15000 * 4);
+        }
+    }
+
+    @Nested
+    @DisplayName("[utility] 주문 기능 테스트")
+    class utilityTest {
+        private Order provideOrder() {
+            Product pants = new Product(1, "바지", "유니클로", 10000);
+            OrderItem orderItem = new OrderItem(1, 3, pants);
+            ArrayList<OrderItem> orderItems = new ArrayList<>();
+            orderItems.add(orderItem);
+
+            DeliveryInfo deliveryInfo = new DeliveryInfo("bak",
+                    "010-1234-5678",
+                    "경기도",
+                    "1201호");
+            return new Order(orderItems, deliveryInfo, OrderState.DELIVERING);
+        }
+        @Test
+        @DisplayName("[EXCEPTION] 이미 출고되었다면 주문을 취소할 수 없다.")
+        void orderState_notDelivery_canOrderCancel() {
+            Order order = provideOrder();
+            assertThatIllegalStateException()
+                    .isThrownBy(order::cancel)
+                    .withMessage("already Shipped");
+        }
+
+        @Test
+        @DisplayName("[SUCCESS] 이미 출고되었다면 배송지 정보를 변경할 수 없다.")
+        void orderState_NotDelivery_canChangeDeliveryInfo() {
+            Order order = provideOrder();
+            DeliveryInfo changedDeliveryInfo = new DeliveryInfo("kim",
+                    "010-1111-1111",
+                    "경상북도",
+                    "702호");
+            assertThatIllegalStateException()
+                    .isThrownBy(() -> order.changeShippingInfo(changedDeliveryInfo))
+                    .withMessage("already Shipped");
         }
     }
 
