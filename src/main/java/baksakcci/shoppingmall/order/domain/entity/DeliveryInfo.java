@@ -2,17 +2,12 @@ package baksakcci.shoppingmall.order.domain.entity;
 
 public class DeliveryInfo {
 
-    private String receiverName;
-    private String receiverPhoneNumber;
-    private String deliveryAddress;
-    private String deliveryDetailAddress;
+    private Receiver receiver;
+    private Address address;
 
     // constructor
-    public DeliveryInfo(String receiverName, String receiverPhoneNumber, String deliveryAddress,
-            String deliveryDetailAddress) {
-        this.receiverName = receiverName;
-        this.receiverPhoneNumber = receiverPhoneNumber;
-        this.deliveryAddress = deliveryAddress;
-        this.deliveryDetailAddress = deliveryDetailAddress;
+    public DeliveryInfo(Receiver receiver, Address address) {
+        this.receiver = receiver;
+        this.address = address;
     }
 }

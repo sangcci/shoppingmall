@@ -4,11 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import baksakcci.shoppingmall.order.domain.entity.Address;
 import baksakcci.shoppingmall.order.domain.entity.DeliveryInfo;
 import baksakcci.shoppingmall.order.domain.entity.Order;
 import baksakcci.shoppingmall.order.domain.entity.OrderItem;
 import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import baksakcci.shoppingmall.order.domain.entity.OrderState;
+import baksakcci.shoppingmall.order.domain.entity.Receiver;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -35,10 +37,9 @@ public class OrderTest {
             ArrayList<OrderItem> orderItems = new ArrayList<>();
             orderItems.add(orderItem);
 
-            DeliveryInfo deliveryInfo = new DeliveryInfo("bak",
-                    "010-1234-5678",
-                    "경기도",
-                    "1201호");
+            Receiver receiver = new Receiver("bak", "010-1234-5678");
+            Address address = new Address("경기도", "1201호");
+            DeliveryInfo deliveryInfo = new DeliveryInfo(receiver, address);
 
             // when
             Order order = new Order(orderItems, deliveryInfo, OrderState.PAYMENT_WAITING);
@@ -58,10 +59,10 @@ public class OrderTest {
             orderItems.add(orderItem1);
             orderItems.add(orderItem2);
 
-            DeliveryInfo deliveryInfo = new DeliveryInfo("bak",
-                    "010-1234-5678",
-                    "경기도",
-                    "1201호");
+            Receiver receiver = new Receiver("bak", "010-1234-5678");
+            Address address = new Address("경기도", "1201호");
+            DeliveryInfo deliveryInfo = new DeliveryInfo(receiver, address);
+
             return Stream.of(
                     Arguments.of("no order items.",
                             new ArrayList<OrderItem>(),
@@ -97,10 +98,9 @@ public class OrderTest {
             orderItems.add(orderItem1);
             orderItems.add(orderItem2);
 
-            DeliveryInfo deliveryInfo = new DeliveryInfo("bak",
-                    "010-1234-5678",
-                    "경기도",
-                    "1201호");
+            Receiver receiver = new Receiver("bak", "010-1234-5678");
+            Address address = new Address("경기도", "1201호");
+            DeliveryInfo deliveryInfo = new DeliveryInfo(receiver, address);
 
             // when
             Order order = new Order(orderItems, deliveryInfo, OrderState.CANCELED);
@@ -119,10 +119,10 @@ public class OrderTest {
             ArrayList<OrderItem> orderItems = new ArrayList<>();
             orderItems.add(orderItem);
 
-            DeliveryInfo deliveryInfo = new DeliveryInfo("bak",
-                    "010-1234-5678",
-                    "경기도",
-                    "1201호");
+            Receiver receiver = new Receiver("bak", "010-1234-5678");
+            Address address = new Address("경기도", "1201호");
+            DeliveryInfo deliveryInfo = new DeliveryInfo(receiver, address);
+
             return new Order(orderItems, deliveryInfo, OrderState.DELIVERING);
         }
         @Test
@@ -138,10 +138,10 @@ public class OrderTest {
         @DisplayName("[SUCCESS] 이미 출고되었다면 배송지 정보를 변경할 수 없다.")
         void orderState_NotDelivery_canChangeDeliveryInfo() {
             Order order = provideOrder();
-            DeliveryInfo changedDeliveryInfo = new DeliveryInfo("kim",
-                    "010-1111-1111",
-                    "경상북도",
-                    "702호");
+            Receiver receiver = new Receiver("bak", "010-1234-5678");
+            Address address = new Address("경기도", "1201호");
+            DeliveryInfo changedDeliveryInfo = new DeliveryInfo(receiver, address);
+
             assertThatIllegalStateException()
                     .isThrownBy(() -> order.changeShippingInfo(changedDeliveryInfo))
                     .withMessage("already Shipped");
