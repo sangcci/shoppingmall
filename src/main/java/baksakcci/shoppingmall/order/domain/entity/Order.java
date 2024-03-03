@@ -1,24 +1,40 @@
 package baksakcci.shoppingmall.order.domain.entity;
 
-import baksakcci.shoppingmall.member.domain.entity.User;
+import baksakcci.shoppingmall.order.application.dto.OrderCreate;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
+@Getter
+@Builder
+@AllArgsConstructor
 public class Order {
 
     private long id;
     private List<OrderItem> orderItems;
-    @Getter
+    private Orderer orderer;
     private int totalPrice;
     private DeliveryInfo deliveryInfo;
     private OrderState orderState;
     private LocalDateTime orderAt;
-    private User user;
+
+    // static factory
+    public static Order from(OrderCreate orderCreate, List<OrderItem> orderItems) {
+        DeliveryInfo deliveryInfo = DeliveryInfo.builder()
+                .address(orderCreate.getAddress())
+                .detailAddress(orderCreate.getDetailAddress())
+                .receiverName(orderCreate.getReceiverName())
+                .receiverPhoneNumber(orderCreate.getReceiverPhoneNumber())
+                .build();
+        return new Order(orderItems, deliveryInfo, OrderState.PAYMENT_WAITING);
+    }
 
     // constructor
     public Order(List<OrderItem> orderItems, DeliveryInfo deliveryInfo, OrderState orderState) {
         setOrderItems(orderItems);
+        calculateTotalPrice();
         setDeliveryInfo(deliveryInfo);
         this.orderState = orderState;
         this.orderAt = LocalDateTime.now();
@@ -64,6 +80,7 @@ public class Order {
         }
     }
 
+    // null값 검증은, VO 객체 안에서 검증이 가능하지 않을까?
     private void verifyNullDeliveryInfo(DeliveryInfo deliveryInfo) {
         if (deliveryInfo == null) {
             throw new IllegalArgumentException("no delivery info.");

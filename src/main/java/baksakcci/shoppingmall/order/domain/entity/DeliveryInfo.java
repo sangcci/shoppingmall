@@ -1,13 +1,25 @@
 package baksakcci.shoppingmall.order.domain.entity;
 
+import java.util.NoSuchElementException;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
 public class DeliveryInfo {
 
-    private Receiver receiver;
-    private Address address;
+    private final String address;
+    private final String detailAddress;
+    private final String receiverName;
+    private final String receiverPhoneNumber;
 
     // constructor
-    public DeliveryInfo(Receiver receiver, Address address) {
-        this.receiver = receiver;
+    @Builder
+    public DeliveryInfo(String address, String detailAddress, String receiverName, String receiverPhoneNumber) {
         this.address = address;
+        this.detailAddress = detailAddress;
+        this.receiverName = receiverName;
+        this.receiverPhoneNumber = receiverPhoneNumber;
     }
+
+    // validation
 }
