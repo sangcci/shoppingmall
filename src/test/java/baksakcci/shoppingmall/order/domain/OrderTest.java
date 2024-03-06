@@ -3,10 +3,6 @@ package baksakcci.shoppingmall.order.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import baksakcci.shoppingmall.order.domain.entity.DeliveryInfo;
-import baksakcci.shoppingmall.order.domain.entity.Order;
-import baksakcci.shoppingmall.order.domain.entity.OrderItem;
-import baksakcci.shoppingmall.order.domain.entity.OrderState;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Nested;

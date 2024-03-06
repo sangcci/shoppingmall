@@ -1,8 +1,7 @@
 package baksakcci.shoppingmall.order.application.port;
 
-import baksakcci.shoppingmall.order.domain.entity.Order;
+import baksakcci.shoppingmall.order.domain.Order;
 import java.util.List;
-import java.util.Optional;
 
 public interface OrderRepository {
 

@@ -1,4 +1,4 @@
-package baksakcci.shoppingmall.order.domain.entity;
+package baksakcci.shoppingmall.order.domain;
 
 import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import lombok.AllArgsConstructor;
