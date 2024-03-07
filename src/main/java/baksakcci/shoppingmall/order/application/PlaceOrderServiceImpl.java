@@ -32,7 +32,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
             Product product = productRepository.findById(each.getProductId());
             // (상품 검증 로직들...) -> 얘네들은 Order 애그리거트 내부의 책임이므로 여기서 구현할게 아님. 밑이나 Order 내부에서 구현
             return OrderItem.builder()
-                    .productId(product.getId())
+                    .product(product)
                     .qty(each.getQty())
                     .price(product.getPrice())
                     .build();
@@ -40,9 +40,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
 
         // 주문 생성 및 저장
         Order order = Order.from(orderCreate, orderItems);
-        orderRepository.create(order);
+        Order savedOrder = orderRepository.create(order);
 
-        return order;
+        return savedOrder;
     }
 
 }

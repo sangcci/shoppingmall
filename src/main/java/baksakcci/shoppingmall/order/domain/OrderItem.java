@@ -12,7 +12,7 @@ public class OrderItem {
 
     private int price;
     private int qty;
-    private Long productId;
+    private Product product;
 
     // method, role
     public int calculateAmounts() {

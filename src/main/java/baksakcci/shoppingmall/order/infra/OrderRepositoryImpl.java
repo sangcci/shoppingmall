@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -20,14 +21,25 @@ public class OrderRepositoryImpl implements OrderRepository {
     private final ProductJpaRepository productJpaRepository;
 
     @Override
-    public void create(Order order) {
+    @Transactional
+    public Order create(Order order) {
         OrderEntity orderEntity = OrderEntity.from(order);
-        orderJpaRepository.save(orderEntity);
+        OrderEntity saved = orderJpaRepository.save(orderEntity);
+        List<OrderItemEntity> savedItems = order.getOrderItems().stream().map(each -> {
+            OrderItemEntity orderItemEntity = OrderItemEntity.from(each);
+            return orderItemJpaRepository.save(orderItemEntity);
+        }).toList();
+        return saved.toModel(toOrderItems(savedItems));
+    }
+
+    public List<OrderItem> toOrderItems(List<OrderItemEntity> orderItemEntities) {
+        return orderItemEntities.stream().map(each -> each.toModel()).toList();
     }
 
     @Override
-    public void update(Order order) {
-
+    @Transactional
+    public Order update(Order order) {
+        return null;
     }
 
     @Override
@@ -38,7 +50,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             ProductEntity productEntity = productJpaRepository.findById(each.getId()).orElseThrow(NoSuchElementException::new);
             Product product = productEntity.toModel();
             return OrderItem.builder()
-                    .productId(product.getId())
+                    .product(product)
                     .qty(each.getQty())
                     .price(product.getPrice())
                     .build();

@@ -13,17 +13,19 @@ public class OrderFakeRepository implements OrderRepository {
     private static final Map<Long, Order> orders = new HashMap<>();
 
     @Override
-    public void create(Order order) {
+    public Order create(Order order) {
         orders.put(id, order);
         id += 1L;
+        return orders.get(id);
     }
 
     @Override
-    public void update(Order order) {
+    public Order update(Order order) {
         if (orders.getOrDefault(order.getId(), null) == null) {
             throw new NoSuchElementException();
         }
         orders.put(order.getId(), order);
+        return orders.get(order.getId());
     }
 
     @Override
