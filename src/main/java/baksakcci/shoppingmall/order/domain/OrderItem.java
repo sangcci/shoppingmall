@@ -1,4 +1,4 @@
-package baksakcci.shoppingmall.order.domain.entity;
+package baksakcci.shoppingmall.order.domain;
 
 import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ public class OrderItem {
 
     private int price;
     private int qty;
-    private Long productId;
+    private Product product;
 
     // method, role
     public int calculateAmounts() {

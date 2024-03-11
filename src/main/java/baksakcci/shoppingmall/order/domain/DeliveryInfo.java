@@ -1,4 +1,4 @@
-package baksakcci.shoppingmall.order.domain.entity;
+package baksakcci.shoppingmall.order.domain;
 
 import java.util.NoSuchElementException;
 import lombok.Builder;

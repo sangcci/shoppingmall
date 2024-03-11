@@ -3,10 +3,7 @@ package baksakcci.shoppingmall.order.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import baksakcci.shoppingmall.order.domain.entity.DeliveryInfo;
-import baksakcci.shoppingmall.order.domain.entity.Order;
-import baksakcci.shoppingmall.order.domain.entity.OrderItem;
-import baksakcci.shoppingmall.order.domain.entity.OrderState;
+import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Nested;
@@ -22,17 +19,15 @@ public class OrderTest {
 
         @Test
         void 올바른_주문정보가_들어오면_주문_객체를_생성한다() {
-            /* 해당 코드는 다른 도메인 영역에 의존함
+            // given
             Product product = Product.builder()
-                    .id(1)
+                    .id(1L)
                     .name("바지")
                     .manufacturer("유니클로")
                     .price(10000)
                     .build();
-            */
-            // given
             OrderItem orderItem = OrderItem.builder()
-                    .productId(1L)
+                    .product(product)
                     .qty(3)
                     .price(10000)
                     .build();
