@@ -4,7 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import baksakcci.shoppingmall.order.presentation.request.OrderRequest;
+import baksakcci.shoppingmall.order.domain.OrderCreate;
+import baksakcci.shoppingmall.order.domain.OrderCreate.OrderItemCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
@@ -30,20 +31,20 @@ public class PlaceOrderControllerTest {
     @Test
     void 사용자는_주문을_할_수_있다() throws Exception {
         // given
-        OrderItemRequest item1 = OrderItemRequest.builder()
+        OrderItemCreate item1 = OrderItemCreate.builder()
                 .productId(1L)
                 .qty(2)
                 .build();
-        OrderItemRequest item2 = OrderItemRequest.builder()
+        OrderItemCreate item2 = OrderItemCreate.builder()
                 .productId(2L)
                 .qty(3)
                 .build();
-        ArrayList<OrderItemRequest> items = new ArrayList<>();
+        ArrayList<OrderItemCreate> items = new ArrayList<>();
         items.add(item1);
         items.add(item2);
 
-        OrderRequest orderRequest = OrderRequest.builder()
-                .orderItemRequests(items)
+        OrderCreate orderRequest = OrderCreate.builder()
+                .orderItemCreates(items)
                 .address("경기도")
                 .detailAddress("땡땡빌딩 101호")
                 .receiverName("홍길동")

@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import baksakcci.shoppingmall.catalog.infra.ProductFakeRepository;
+import baksakcci.shoppingmall.order.application.port.PlaceOrderService;
 import baksakcci.shoppingmall.order.domain.Order;
-import baksakcci.shoppingmall.order.application.dto.OrderCreate;
+import baksakcci.shoppingmall.order.domain.OrderCreate;
+import baksakcci.shoppingmall.order.domain.OrderCreate.OrderItemCreate;
 import baksakcci.shoppingmall.order.domain.OrderItem;
 import baksakcci.shoppingmall.order.infra.OrderFakeRepository;
 import java.time.LocalDate;
@@ -15,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 public class PlaceOrderServiceTest {
 
-    private PlaceOrderServiceImpl placeOrderService;
+    private PlaceOrderService placeOrderService;
     private OrderCreate orderCreate;
 
     @BeforeEach

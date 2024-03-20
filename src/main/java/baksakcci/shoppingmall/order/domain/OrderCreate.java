@@ -1,4 +1,4 @@
-package baksakcci.shoppingmall.order.application.dto;
+package baksakcci.shoppingmall.order.domain;
 
 import java.util.List;
 import lombok.Builder;

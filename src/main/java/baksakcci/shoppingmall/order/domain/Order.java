@@ -1,6 +1,5 @@
 package baksakcci.shoppingmall.order.domain;
 
-import baksakcci.shoppingmall.order.application.dto.OrderCreate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
