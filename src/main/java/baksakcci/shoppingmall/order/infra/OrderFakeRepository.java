@@ -9,14 +9,13 @@ import java.util.NoSuchElementException;
 
 public class OrderFakeRepository implements OrderRepository {
 
-    private Long id = 0L;
+    private Long id = 1L;
     private static final Map<Long, Order> orders = new HashMap<>();
 
     @Override
     public Order create(Order order) {
         orders.put(id, order);
-        id += 1L;
-        return orders.get(id);
+        return orders.get(id++);
     }
 
     @Override
