@@ -15,4 +15,11 @@ public class OrderCreate {
     private String receiverPhoneNumber;
     private Long ordererId;
 
+    @Builder
+    @Getter
+    public static class OrderItemCreate {
+
+        private Long productId;
+        private int qty;
+    }
 }

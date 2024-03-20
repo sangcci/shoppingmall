@@ -3,7 +3,7 @@ package baksakcci.shoppingmall.order.application;
 import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import baksakcci.shoppingmall.catalog.domain.repository.ProductRepository;
 import baksakcci.shoppingmall.order.application.dto.OrderCreate;
-import baksakcci.shoppingmall.order.application.dto.OrderItemCreate;
+import baksakcci.shoppingmall.order.application.dto.OrderCreate.OrderItemCreate;
 import baksakcci.shoppingmall.order.application.port.PlaceOrderService;
 import baksakcci.shoppingmall.order.domain.Order;
 import baksakcci.shoppingmall.order.domain.OrderItem;

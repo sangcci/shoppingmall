@@ -7,7 +7,6 @@ import baksakcci.shoppingmall.catalog.infra.ProductFakeRepository;
 import baksakcci.shoppingmall.order.domain.Order;
 import baksakcci.shoppingmall.order.application.dto.OrderCreate;
 import baksakcci.shoppingmall.order.domain.OrderItem;
-import baksakcci.shoppingmall.order.application.dto.OrderItemCreate;
 import baksakcci.shoppingmall.order.infra.OrderFakeRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
