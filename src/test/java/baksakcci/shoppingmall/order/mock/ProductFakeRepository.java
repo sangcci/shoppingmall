@@ -1,12 +1,10 @@
-package baksakcci.shoppingmall.catalog.infra;
+package baksakcci.shoppingmall.order.mock;
 
 import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import baksakcci.shoppingmall.catalog.domain.repository.ProductRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import org.springframework.stereotype.Repository;
 
 public class ProductFakeRepository implements ProductRepository {
 
