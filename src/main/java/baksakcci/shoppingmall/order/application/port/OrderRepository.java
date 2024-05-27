@@ -1,15 +1,13 @@
 package baksakcci.shoppingmall.order.application.port;
 
 import baksakcci.shoppingmall.order.domain.Order;
-import java.util.List;
 
 public interface OrderRepository {
 
-    Order create(Order order);
+    void create(Order order);
+
+    Order findById(long id);
 
     Order update(Order order);
 
-    Order findById(Long id);
-
-    List<Order> findByOrdererId(Long id);
 }
