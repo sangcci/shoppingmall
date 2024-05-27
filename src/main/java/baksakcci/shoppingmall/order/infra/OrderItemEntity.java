@@ -2,7 +2,6 @@ package baksakcci.shoppingmall.order.infra;
 
 import baksakcci.shoppingmall.catalog.infra.ProductEntity;
 import baksakcci.shoppingmall.order.domain.OrderItem;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
@@ -25,17 +23,19 @@ public class OrderItemEntity {
     private String name;
     private int price;
     private int qty;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private OrderEntity orderEntity;
 
-    public static OrderItemEntity from(OrderItem orderItem) {
+    public static OrderItemEntity from(OrderItem orderItem, OrderEntity orderEntity) {
         OrderItemEntity orderItemEntity = new OrderItemEntity();
+        orderItemEntity.name = orderItem.getProduct().getName();
         orderItemEntity.price = orderItem.getPrice();
         orderItemEntity.qty = orderItem.getQty();
+        orderItemEntity.orderEntity = orderEntity;
         orderItemEntity.productEntity = ProductEntity.from(orderItem.getProduct());
         return orderItemEntity;
     }
