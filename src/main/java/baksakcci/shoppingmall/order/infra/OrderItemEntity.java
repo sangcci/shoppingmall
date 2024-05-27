@@ -2,6 +2,7 @@ package baksakcci.shoppingmall.order.infra;
 
 import baksakcci.shoppingmall.catalog.infra.ProductEntity;
 import baksakcci.shoppingmall.order.domain.OrderItem;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,8 +20,9 @@ import lombok.Getter;
 public class OrderItemEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String name;
     private int price;
     private int qty;
     @OneToOne
