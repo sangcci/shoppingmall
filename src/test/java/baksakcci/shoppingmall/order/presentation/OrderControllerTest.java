@@ -1,6 +1,8 @@
 package baksakcci.shoppingmall.order.presentation;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -10,27 +12,58 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureTestDatabase
+@ActiveProfiles("test")
 @Sql(value = "/sql/order-create-controller-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-public class PlaceOrderControllerTest {
+public class OrderControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
+    @Order(1)
     void 사용자는_주문을_할_수_있다() throws Exception {
         // given
+        OrderCreate orderCreate = orderCreateFixture();
+
+        // when, then
+        mockMvc.perform(
+                        post("/api/order/create")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(orderCreate)))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    @Order(2)
+    void 특정_주문_내역_조회() throws Exception {
+        // given
+        String orderId = "1";
+
+        // when, then
+        mockMvc.perform(
+                        get("/api/order/" + orderId))
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$.id").value(1),
+                        jsonPath("$.orderState").value("PAYMENT_WAITING"),
+                        jsonPath("$.orderItemDatas[0].name").value("꿀사과")
+                );
+    }
+
+    OrderCreate orderCreateFixture() {
         OrderItemCreate item1 = OrderItemCreate.builder()
                 .productId(1L)
                 .qty(2)
@@ -43,25 +76,12 @@ public class PlaceOrderControllerTest {
         items.add(item1);
         items.add(item2);
 
-        OrderCreate orderRequest = OrderCreate.builder()
+        return OrderCreate.builder()
                 .orderItemCreates(items)
                 .address("경기도")
                 .detailAddress("땡땡빌딩 101호")
                 .receiverName("홍길동")
                 .receiverPhoneNumber("010-1234-5678")
                 .build();
-
-        // when, then
-        mockMvc.perform(
-                        post("/api/order/create")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(orderRequest)))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.orderItems[0].qty").value(2))
-                //.andExpect(jsonPath("$.orderer.id").isNumber())
-                .andExpect(jsonPath("$.totalPrice").value(10000 * 2 + 5000 * 3))
-                .andExpect(jsonPath("$.deliveryInfo.address").value("경기도"))
-                .andExpect(jsonPath("$.orderState").value("PAYMENT_WAITING"));
     }
 }

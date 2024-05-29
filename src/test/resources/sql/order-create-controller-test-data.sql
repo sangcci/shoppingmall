@@ -1,3 +1,4 @@
-INSERT INTO products (id, name, manufacturer, price, date)
-VALUES (1, '바지', '유니클로', 10000, '2024-02-28'),
-       (2, '티셔츠', '유니클로', 5000, '2024-02-28');
+INSERT INTO products(DATE, MANUFACTURER, NAME, PRICE)
+VALUES
+    ('2024-04-11', '영주시', '꿀사과', 2000),
+    ('2024-04-11', '영주한우', '안창살', 65000);
