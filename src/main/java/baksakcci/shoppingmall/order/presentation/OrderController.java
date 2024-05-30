@@ -1,5 +1,6 @@
 package baksakcci.shoppingmall.order.presentation;
 
+import baksakcci.shoppingmall.common.response.Response;
 import baksakcci.shoppingmall.order.application.port.OrderService;
 import baksakcci.shoppingmall.order.domain.Order;
 import baksakcci.shoppingmall.order.domain.OrderCreate;
@@ -25,7 +26,7 @@ public class OrderController {
     @PostMapping("/create")
     public ResponseEntity place(@RequestBody OrderCreate orderCreate) {
         orderService.create(orderCreate);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Response.success(201, "주문이 정상적으로 처리되었습니다.", null));
     }
 
     @GetMapping("list")
@@ -34,9 +35,9 @@ public class OrderController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<OrderData> getOne(@PathVariable("id") Long id) {
+    public ResponseEntity<Response> getOne(@PathVariable("id") Long id) {
         OrderData orderData = orderQueryRepository.findById(id);
-        return ResponseEntity.ok().body(orderData);
+        return ResponseEntity.ok().body(Response.success(200, "요청한 데이터 처리", orderData));
     }
 
 }
