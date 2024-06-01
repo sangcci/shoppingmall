@@ -29,13 +29,13 @@ public class OrderController {
     public ResponseEntity<Response> place(@RequestBody OrderCreate orderCreate) {
         long orderId = orderService.create(orderCreate);
         OrderIdResponse orderIdResponse = new OrderIdResponse(orderId);
-        return ResponseEntity.created(URI.create("/order/" + orderId)).body(Response.success(201, "주문이 정상적으로 처리되었습니다.", orderIdResponse));
+        return ResponseEntity.created(URI.create("/order/" + orderId)).body(Response.success(201, "order created!", orderIdResponse));
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Response> getOne(@PathVariable("id") Long id) {
         OrderData orderData = orderQueryRepository.findById(id);
-        return ResponseEntity.ok().body(Response.success(200, "요청한 데이터 처리", orderData));
+        return ResponseEntity.ok().body(Response.success(200, "ok", orderData));
     }
 
     @GetMapping("list")
