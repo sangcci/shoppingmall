@@ -1,5 +1,8 @@
 package baksakcci.shoppingmall.common.response;
 
+import lombok.Getter;
+
+@Getter
 public class Response<T> {
 
     private final String status;
