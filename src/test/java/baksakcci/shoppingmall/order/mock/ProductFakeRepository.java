@@ -11,8 +11,9 @@ public class ProductFakeRepository implements ProductRepository {
     private static final Map<Long, Product> products = new HashMap<>();
 
     @Override
-    public void save(Product product) {
+    public long save(Product product) {
         products.put(product.getId(), product);
+        return product.getId();
     }
 
     @Override

@@ -13,9 +13,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     private final ProductJpaRepository productJpaRepository;
 
     @Override
-    public void save(Product product) {
+    public long save(Product product) {
         ProductEntity productEntity = ProductEntity.from(product);
         productJpaRepository.save(productEntity);
+        return productEntity.getId();
     }
 
     @Override

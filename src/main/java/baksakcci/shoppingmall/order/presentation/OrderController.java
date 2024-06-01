@@ -6,6 +6,8 @@ import baksakcci.shoppingmall.order.domain.Order;
 import baksakcci.shoppingmall.order.domain.OrderCreate;
 import baksakcci.shoppingmall.order.domain.OrderData;
 import baksakcci.shoppingmall.order.infra.OrderQueryRepository;
+import baksakcci.shoppingmall.order.presentation.dto.OrderIdResponse;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,14 +26,10 @@ public class OrderController {
     private final OrderQueryRepository orderQueryRepository;
 
     @PostMapping("/create")
-    public ResponseEntity place(@RequestBody OrderCreate orderCreate) {
-        orderService.create(orderCreate);
-        return ResponseEntity.ok().body(Response.success(201, "주문이 정상적으로 처리되었습니다.", null));
-    }
-
-    @GetMapping("list")
-    public Order getList() {
-        return null;
+    public ResponseEntity<Response> place(@RequestBody OrderCreate orderCreate) {
+        long orderId = orderService.create(orderCreate);
+        OrderIdResponse orderIdResponse = new OrderIdResponse(orderId);
+        return ResponseEntity.created(URI.create("/order/" + orderId)).body(Response.success(201, "주문이 정상적으로 처리되었습니다.", orderIdResponse));
     }
 
     @GetMapping("{id}")
@@ -40,4 +38,8 @@ public class OrderController {
         return ResponseEntity.ok().body(Response.success(200, "요청한 데이터 처리", orderData));
     }
 
+    @GetMapping("list")
+    public Order getList() {
+        return null;
+    }
 }

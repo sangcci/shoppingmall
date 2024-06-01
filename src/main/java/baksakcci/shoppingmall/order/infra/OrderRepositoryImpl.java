@@ -16,13 +16,14 @@ public class OrderRepositoryImpl implements OrderRepository {
     private final OrderItemJpaRepository orderItemJpaRepository;
 
     @Override
-    public void create(Order order) {
+    public long create(Order order) {
         OrderEntity orderEntity = OrderEntity.from(order);
         orderJpaRepository.save(orderEntity);
         order.getOrderItems().forEach(each -> {
             OrderItemEntity orderItemEntity = OrderItemEntity.from(each, orderEntity);
             orderItemJpaRepository.save(orderItemEntity);
         });
+        return orderEntity.getId();
     }
 
     @Override

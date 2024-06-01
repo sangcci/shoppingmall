@@ -22,7 +22,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void create(OrderCreate orderCreate) {
+    public long create(OrderCreate orderCreate) {
         // 회원 정보 확인(주문자)
 
         // 상품 정보 확인 (굳이 검증까진 하지 않음. 이미 product 도메인에서 검증되어서 만들어져서 저장되었기 때문)
@@ -39,8 +39,8 @@ public class OrderServiceImpl implements OrderService {
                     .build();
         }).toList();
 
-        // 주문 생성 및 저장
+        // 주문 생성 및 저장 및 생성된 주문 id 반환
         Order order = Order.from(orderCreate, orderItems);
-        orderRepository.create(order);
+        return orderRepository.create(order);
     }
 }

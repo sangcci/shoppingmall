@@ -12,8 +12,9 @@ public class OrderFakeRepository implements OrderRepository {
     private static final Map<Long, Order> orderStorage = new HashMap<>();
 
     @Override
-    public void create(Order order) {
+    public long create(Order order) {
         orderStorage.put(id++, order);
+        return id;
     }
 
     @Override

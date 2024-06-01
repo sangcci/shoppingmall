@@ -40,10 +40,10 @@ public class OrderServiceTest {
         OrderCreate orderCreate = orderCreateFixture();
 
         // when
-        orderService.create(orderCreate);
+        long orderId = orderService.create(orderCreate);
 
         //  then
-        Order order = orderRepository.findById(1L);
+        Order order = orderRepository.findById(orderId);
         assertThat(order.getTotalPrice()).isEqualTo(2000 * 2 + 65000 * 3);
         assertThat(order.getDeliveryInfo().getDetailAddress()).isEqualTo("땡땡빌딩 101호");
         assertThat(order.getOrderItems().get(0).getProduct().getName()).isEqualTo("꿀사과");
