@@ -39,7 +39,7 @@ public class OrderControllerTest {
 
         // when, then
         mockMvc.perform(
-                        post("/api/order/create")
+                        post("/order/create")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(orderCreate)))
                 .andExpect(status().is2xxSuccessful());
@@ -53,13 +53,14 @@ public class OrderControllerTest {
 
         // when, then
         mockMvc.perform(
-                        get("/api/order/" + orderId))
+                        get("/order/" + orderId))
                 .andExpectAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        jsonPath("$.id").value(1),
-                        jsonPath("$.orderState").value("PAYMENT_WAITING"),
-                        jsonPath("$.orderItemDatas[0].name").value("꿀사과")
+                        jsonPath("$.code").value(200),
+                        jsonPath("$.data.id").value(1),
+                        jsonPath("$.data.orderState").value("PAYMENT_WAITING"),
+                        jsonPath("$.data.orderItemDatas[0].name").value("꿀사과")
                 );
     }
 

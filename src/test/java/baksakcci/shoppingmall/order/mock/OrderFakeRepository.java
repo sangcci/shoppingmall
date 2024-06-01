@@ -13,8 +13,8 @@ public class OrderFakeRepository implements OrderRepository {
 
     @Override
     public long create(Order order) {
-        orderStorage.put(id++, order);
-        return id;
+        orderStorage.put(id, order);
+        return id++;
     }
 
     @Override

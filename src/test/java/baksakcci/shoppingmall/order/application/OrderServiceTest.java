@@ -42,7 +42,7 @@ public class OrderServiceTest {
         // when
         long orderId = orderService.create(orderCreate);
 
-        //  then
+        // then
         Order order = orderRepository.findById(orderId);
         assertThat(order.getTotalPrice()).isEqualTo(2000 * 2 + 65000 * 3);
         assertThat(order.getDeliveryInfo().getDetailAddress()).isEqualTo("땡땡빌딩 101호");
