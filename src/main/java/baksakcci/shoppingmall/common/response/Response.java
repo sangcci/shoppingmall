@@ -25,8 +25,8 @@ public class Response<T> {
         return new Response<>("FAILURE", code, msg, data);
     }
 
-    public static <T> Response<T> error(int code, String msg, T data) {
-        return new Response<>("ERROR", code, msg, data);
+    public static <T> Response<T> error(int code, String msg) {
+        return new Response<>("ERROR", code, msg, null);
     }
 
 }
