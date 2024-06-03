@@ -19,7 +19,7 @@ public class ProductFakeRepository implements ProductRepository {
     @Override
     public Product findById(Long id) {
         Product product = products.get(id);
-        if (product == null) throw new NoSuchElementException();
+        if (product == null) throw new NoSuchElementException("No product found with id: " + id);
         return product;
     }
 }

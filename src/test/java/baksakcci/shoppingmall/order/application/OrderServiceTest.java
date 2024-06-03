@@ -5,16 +5,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import baksakcci.shoppingmall.catalog.domain.repository.ProductRepository;
 import baksakcci.shoppingmall.order.application.port.OrderRepository;
-import baksakcci.shoppingmall.order.domain.Order;
-import baksakcci.shoppingmall.order.mock.ProductFakeRepository;
 import baksakcci.shoppingmall.order.application.port.OrderService;
+import baksakcci.shoppingmall.order.domain.Order;
 import baksakcci.shoppingmall.order.domain.OrderCreate;
 import baksakcci.shoppingmall.order.domain.OrderCreate.OrderItemCreate;
 import baksakcci.shoppingmall.order.mock.OrderFakeRepository;
+import baksakcci.shoppingmall.order.mock.ProductFakeRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.stream.Stream;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class OrderServiceTest {
 
@@ -50,8 +56,31 @@ public class OrderServiceTest {
     }
 
     @Test
-    void 조회한_상품이_존재하지_않거나_품절되었다면_예외를_발생한다() {
+    void 조회한_상품이_존재하지_않다면_예외를_발생시킨다() {
+        // given
+        OrderCreate orderCreate = orderCreateFixture();
 
+        // when & then
+        Assertions.assertThatThrownBy(() -> orderService.create(orderCreate))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("No product found with id: "  + orderCreate.getOrderItemCreates().get(0).getProductId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideInvalidRequest")
+    void 주문_생성_요청_데이터가_유효하지_않다면_예외를_발생시킨다() {
+
+    }
+
+    @Test
+    void 조회한_상품이_품절되었다면_예외를_발생한다() {
+
+    }
+
+    static Stream<Arguments> provideInvalidRequest() {
+        return Stream.of(
+                Arguments.of()
+        );
     }
 
     Product productFixtureA() {

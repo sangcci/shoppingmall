@@ -27,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 상품 정보 확인 (굳이 검증까진 하지 않음. 이미 product 도메인에서 검증되어서 만들어져서 저장되었기 때문)
         List<OrderItemCreate> orderItemCreates = orderCreate.getOrderItemCreates();
-        if (orderItemCreates.isEmpty()) throw new NullPointerException();
+        if (orderItemCreates.isEmpty()) throw new NullPointerException("Not write item lists.");
 
         List<OrderItem> orderItems = orderItemCreates.stream().map(each -> {
             Product product = productRepository.findById(each.getProductId());

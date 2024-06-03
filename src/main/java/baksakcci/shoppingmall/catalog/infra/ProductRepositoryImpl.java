@@ -21,7 +21,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product findById(Long id) {
-        ProductEntity productEntity = productJpaRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        ProductEntity productEntity = productJpaRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No product found with id: " + id));
         return productEntity.toModel();
     }
 }

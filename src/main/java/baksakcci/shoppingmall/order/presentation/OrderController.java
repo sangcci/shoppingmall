@@ -7,6 +7,7 @@ import baksakcci.shoppingmall.order.domain.OrderCreate;
 import baksakcci.shoppingmall.order.domain.OrderData;
 import baksakcci.shoppingmall.order.infra.OrderQueryRepository;
 import baksakcci.shoppingmall.order.presentation.dto.OrderIdResponse;
+import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class OrderController {
     private final OrderQueryRepository orderQueryRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<Response> place(@RequestBody OrderCreate orderCreate) {
+    public ResponseEntity<Response> place(@Valid @RequestBody OrderCreate orderCreate) {
         long orderId = orderService.create(orderCreate);
         OrderIdResponse orderIdResponse = new OrderIdResponse(orderId);
         return ResponseEntity.created(URI.create("/order/" + orderId)).body(Response.success(201, "order created!", orderIdResponse));
