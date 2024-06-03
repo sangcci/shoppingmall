@@ -22,4 +22,14 @@ public class OrderData {
         this.orderAt = orderAt;
     }
 
+    @Getter
+    @AllArgsConstructor
+    public static class OrderItemData {
+
+        private long productId;
+        private String name;
+        private int qty;
+        private int price;
+
+    }
 }
