@@ -22,7 +22,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product findById(Long id) {
         ProductEntity productEntity = productJpaRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("No product found with id: " + id));
+                .orElseThrow(() -> new NoSuchElementException(id + "번 상품이 존재하지 않습니다."));
         return productEntity.toModel();
     }
 }

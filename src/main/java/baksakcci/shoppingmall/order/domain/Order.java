@@ -88,7 +88,7 @@ public class Order {
 
     private void verifyIsPAYMENT_WAITING() {
         if (orderState != OrderState.PAYMENT_WAITING && orderState != OrderState.ITEM_PREPARING) {
-            throw new IllegalStateException("already Shipped");
+            throw new IllegalStateException("이미 배송을 준비하고 있어서 주문을 취소할 수 없습니다.");
         }
     }
 
