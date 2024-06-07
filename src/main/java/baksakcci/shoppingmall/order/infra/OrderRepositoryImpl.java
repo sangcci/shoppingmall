@@ -16,7 +16,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     private final OrderItemJpaRepository orderItemJpaRepository;
 
     @Override
-    public long create(Order order) {
+    public long save(Order order) {
         OrderEntity orderEntity = OrderEntity.from(order);
         orderJpaRepository.save(orderEntity);
         order.getOrderItems().forEach(each -> {
@@ -32,11 +32,6 @@ public class OrderRepositoryImpl implements OrderRepository {
         List<OrderItemEntity> orderItemEntities = orderItemJpaRepository.findAllByOrderEntityId(id);
         List<OrderItem> orderItems = orderItemEntities.stream().map(OrderItemEntity::toModel).toList();
         return orderEntity.toModel(orderItems);
-    }
-
-    @Override
-    public Order update(Order order) {
-        return null;
     }
 
 }

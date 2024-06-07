@@ -6,4 +6,5 @@ public interface OrderService {
 
     long create(OrderCreate orderCreate);
 
+    void cancel(long orderId);
 }

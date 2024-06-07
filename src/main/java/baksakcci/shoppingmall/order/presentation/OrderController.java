@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +43,11 @@ public class OrderController {
     @GetMapping("list")
     public Order getList() {
         return null;
+    }
+
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<Response> cancel(@PathVariable("id") Long id) {
+        orderService.cancel(id);
+        return ResponseEntity.ok().body(Response.success(200, "order canceled", null));
     }
 }

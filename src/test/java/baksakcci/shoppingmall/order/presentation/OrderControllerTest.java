@@ -2,6 +2,7 @@ package baksakcci.shoppingmall.order.presentation;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -32,7 +32,6 @@ public class OrderControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    @Order(1)
     void 사용자는_주문을_할_수_있다() throws Exception {
         // given
         OrderCreate orderCreate = orderCreateFixture();
@@ -46,7 +45,6 @@ public class OrderControllerTest {
     }
 
     @Test
-    @Order(2)
     void 특정_주문_내역_조회() throws Exception {
         // given
         String orderId = "1";
@@ -64,18 +62,27 @@ public class OrderControllerTest {
                 );
     }
 
+    @Test
+    void 주문_취소() throws Exception {
+        String orderId = "1";
+
+        mockMvc.perform(
+                put("/order/" + orderId + "/cancel"))
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$.code").value(200),
+                        jsonPath("$.msg").value("order canceled")
+                );
+    }
+
     OrderCreate orderCreateFixture() {
         OrderItemCreate item1 = OrderItemCreate.builder()
                 .productId(1L)
                 .qty(2)
                 .build();
-        OrderItemCreate item2 = OrderItemCreate.builder()
-                .productId(2L)
-                .qty(3)
-                .build();
         ArrayList<OrderItemCreate> items = new ArrayList<>();
         items.add(item1);
-        items.add(item2);
 
         return OrderCreate.builder()
                 .orderItemCreates(items)

@@ -1,10 +1,9 @@
 package baksakcci.shoppingmall.order.mock;
 
-import baksakcci.shoppingmall.order.domain.Order;
 import baksakcci.shoppingmall.order.application.port.OrderRepository;
+import baksakcci.shoppingmall.order.domain.Order;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 public class OrderFakeRepository implements OrderRepository {
 
@@ -12,8 +11,20 @@ public class OrderFakeRepository implements OrderRepository {
     private static final Map<Long, Order> orderStorage = new HashMap<>();
 
     @Override
-    public long create(Order order) {
-        orderStorage.put(id, order);
+    public long save(Order order) {
+        if (order.getId() == 0) {
+            Order newOrder = Order.builder()
+                    .id(id)
+                    .orderItems(order.getOrderItems())
+                    .orderer(order.getOrderer())
+                    .totalPrice(order.getTotalPrice())
+                    .deliveryInfo(order.getDeliveryInfo())
+                    .orderState(order.getOrderState())
+                    .orderAt(order.getOrderAt())
+                    .build();
+            orderStorage.put(id, newOrder);
+        }
+        orderStorage.put(order.getId(), order);
         return id++;
     }
 
@@ -22,12 +33,4 @@ public class OrderFakeRepository implements OrderRepository {
         return orderStorage.get(id);
     }
 
-    @Override
-    public Order update(Order order) {
-        if (orderStorage.getOrDefault(order.getId(), null) == null) {
-            throw new NoSuchElementException();
-        }
-        orderStorage.put(order.getId(), order);
-        return orderStorage.get(order.getId());
-    }
 }

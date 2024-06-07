@@ -4,10 +4,8 @@ import baksakcci.shoppingmall.order.domain.Order;
 
 public interface OrderRepository {
 
-    long create(Order order);
+    long save(Order order);
 
     Order findById(long id);
-
-    Order update(Order order);
 
 }

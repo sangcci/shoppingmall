@@ -41,6 +41,17 @@ public class OrderServiceImpl implements OrderService {
 
         // 주문 생성 및 저장 및 생성된 주문 id 반환
         Order order = Order.from(orderCreate, orderItems);
-        return orderRepository.create(order);
+        return orderRepository.save(order);
     }
+
+    @Override
+    @Transactional
+    public void cancel(long orderId) {
+        Order order = orderRepository.findById(orderId);
+
+        order.cancel();
+
+        orderRepository.save(order);
+    }
+
 }

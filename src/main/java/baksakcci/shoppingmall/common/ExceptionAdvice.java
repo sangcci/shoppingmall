@@ -21,4 +21,10 @@ public class ExceptionAdvice {
         return ResponseEntity.status(400)
                 .body(Response.error(400, "Invalid request data"));
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Response> exception(IllegalStateException e) {
+        return ResponseEntity.badRequest()
+                .body(Response.error(400, e.getMessage()));
+    }
 }
