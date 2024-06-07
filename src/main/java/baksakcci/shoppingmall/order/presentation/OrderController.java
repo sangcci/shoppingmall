@@ -31,13 +31,13 @@ public class OrderController {
     public ResponseEntity<Response> place(@Valid @RequestBody OrderCreate orderCreate) {
         long orderId = orderService.create(orderCreate);
         OrderIdResponse orderIdResponse = new OrderIdResponse(orderId);
-        return ResponseEntity.created(URI.create("/order/" + orderId)).body(Response.success(201, "order created!", orderIdResponse));
+        return ResponseEntity.created(URI.create("/order/" + orderId)).body(Response.success(201, "주문이 접수되었습니다.", orderIdResponse));
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Response> getOne(@PathVariable("id") Long id) {
         OrderData orderData = orderQueryRepository.findById(id);
-        return ResponseEntity.ok().body(Response.success(200, "ok", orderData));
+        return ResponseEntity.ok().body(Response.success(200, "주문 정보 입니다.", orderData));
     }
 
     @GetMapping("list")
@@ -48,6 +48,6 @@ public class OrderController {
     @PutMapping("/{id}/cancel")
     public ResponseEntity<Response> cancel(@PathVariable("id") Long id) {
         orderService.cancel(id);
-        return ResponseEntity.ok().body(Response.success(200, "order canceled", null));
+        return ResponseEntity.ok().body(Response.success(200, "주문이 취소되었습니다.", null));
     }
 }
