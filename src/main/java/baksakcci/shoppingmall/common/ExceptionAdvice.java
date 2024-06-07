@@ -2,6 +2,7 @@ package baksakcci.shoppingmall.common;
 
 import baksakcci.shoppingmall.common.response.Response;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +20,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Response> exception(MethodArgumentNotValidException e) {
         return ResponseEntity.status(400)
-                .body(Response.error(400, "Invalid request data"));
+                .body(Response.error(400, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage()));
     }
 
     @ExceptionHandler(IllegalStateException.class)
