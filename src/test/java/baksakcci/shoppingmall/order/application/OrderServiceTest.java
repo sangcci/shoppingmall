@@ -1,6 +1,8 @@
 package baksakcci.shoppingmall.order.application;
 
+import static baksakcci.shoppingmall.order.fixture.ProductFixtureProvider.상품_생성;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import baksakcci.shoppingmall.catalog.domain.repository.ProductRepository;
@@ -11,16 +13,10 @@ import baksakcci.shoppingmall.order.domain.OrderCreate;
 import baksakcci.shoppingmall.order.domain.OrderCreate.OrderItemCreate;
 import baksakcci.shoppingmall.order.mock.OrderFakeRepository;
 import baksakcci.shoppingmall.order.mock.ProductFakeRepository;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.stream.Stream;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 public class OrderServiceTest {
 
@@ -41,8 +37,8 @@ public class OrderServiceTest {
     @Test
     void 주문을_하면_주문_정보를_저장한다() {
         // given
-        productRepository.save(productFixtureA());
-        productRepository.save(productFixtureB());
+        Product product = 상품_생성();
+        productRepository.save(product);
         OrderCreate orderCreate = orderCreateFixture();
 
         // when
@@ -61,47 +57,13 @@ public class OrderServiceTest {
         OrderCreate orderCreate = orderCreateFixture();
 
         // when & then
-        Assertions.assertThatThrownBy(() -> orderService.create(orderCreate))
+        assertThatThrownBy(() -> orderService.create(orderCreate))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("No product found with id: "  + orderCreate.getOrderItemCreates().get(0).getProductId());
     }
 
-    @ParameterizedTest
-    @MethodSource("provideInvalidRequest")
-    void 주문_생성_요청_데이터가_유효하지_않다면_예외를_발생시킨다() {
-
-    }
-
     @Test
-    void 조회한_상품이_품절되었다면_예외를_발생한다() {
-
-    }
-
-    static Stream<Arguments> provideInvalidRequest() {
-        return Stream.of(
-                Arguments.of()
-        );
-    }
-
-    Product productFixtureA() {
-        return Product.builder()
-                .id(1L)
-                .name("꿀사과")
-                .manufacturer("영주시")
-                .price(2000)
-                .date(LocalDate.now())
-                .build();
-    }
-
-    Product productFixtureB() {
-        return Product.builder()
-                .id(2L)
-                .name("안창살")
-                .manufacturer("영주한우")
-                .price(65000)
-                .date(LocalDate.now())
-                .build();
-    }
+    void 조회한_상품이_품절되었다면_예외를_발생한다() {}
 
     OrderCreate orderCreateFixture() {
         OrderItemCreate item1 = OrderItemCreate.builder()
