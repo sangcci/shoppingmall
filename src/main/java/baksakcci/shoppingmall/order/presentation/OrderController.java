@@ -2,13 +2,13 @@ package baksakcci.shoppingmall.order.presentation;
 
 import baksakcci.shoppingmall.common.response.Response;
 import baksakcci.shoppingmall.order.application.port.OrderService;
-import baksakcci.shoppingmall.order.domain.Order;
 import baksakcci.shoppingmall.order.domain.OrderCreate;
 import baksakcci.shoppingmall.order.domain.OrderData;
 import baksakcci.shoppingmall.order.infra.OrderQueryRepository;
 import baksakcci.shoppingmall.order.presentation.dto.OrderIdResponse;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,15 +35,16 @@ public class OrderController {
         return ResponseEntity.created(URI.create("/order/" + orderId)).body(Response.success(201, "주문이 접수되었습니다.", orderIdResponse));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Response> getOne(@PathVariable("id") Long id) {
         OrderData orderData = orderQueryRepository.findById(id);
         return ResponseEntity.ok().body(Response.success(200, "주문 정보 입니다.", orderData));
     }
 
-    @GetMapping("list")
-    public Order getList() {
-        return null;
+    @GetMapping("/list")
+    public ResponseEntity<Response> getList(@RequestParam int page, @RequestParam int size) {
+        List<OrderData> orderDataList = orderQueryRepository.findAllByPagination(page, size);
+        return ResponseEntity.ok().body(Response.success(200, "주문 정보 리스트 입니다.", orderDataList));
     }
 
     @PutMapping("/{id}/cancel")
