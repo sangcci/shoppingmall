@@ -22,24 +22,20 @@ public class OrderQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public OrderData findById(long id) {
-
-        OrderData orderData = em.createQuery(
-                        "select new baksakcci.shoppingmall.order.domain.OrderData(o.id, o.orderState, o.orderAt)" +
-                                " from OrderEntity o" +
-                                " where o.id = :orderId", OrderData.class)
-                .setParameter("orderId", id)
-                .getSingleResult();
-
-        List<OrderItemData> orderItemDataList = queryFactory.select(Projections.constructor(OrderItemData.class,
-                        orderItemEntity.productEntity.id,
-                        orderItemEntity.name,
-                        orderItemEntity.qty,
-                        orderItemEntity.price))
-                .from(orderItemEntity)
-                .where(orderItemEntity.orderEntity.id.eq(id))
-                .fetch();
-
-        orderData.setOrderItemDatas(orderItemDataList);
-        return orderData;
+        return queryFactory.selectFrom(orderEntity)
+                .join(orderItemEntity).on(orderItemEntity.id.eq(orderEntity.id))
+                .where(orderEntity.id.eq(id))
+                .transform(groupBy(orderEntity.id).as(Projections.constructor(OrderData.class,
+                        orderEntity.id,
+                        orderEntity.orderState,
+                        orderEntity.orderAt,
+                        list(Projections.constructor(OrderItemData.class,
+                                orderItemEntity.productEntity.id,
+                                orderItemEntity.name,
+                                orderItemEntity.qty,
+                                orderItemEntity.price
+                        ))
+                )))
+                .get(id);
     }
 }
