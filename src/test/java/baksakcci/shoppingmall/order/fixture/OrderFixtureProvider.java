@@ -40,7 +40,7 @@ public class OrderFixtureProvider {
                 .build();
     }
 
-    public static OrderData 주문_정보_생성() {
+    public static OrderData 주문서_생성() {
         OrderItemData 꿀사과 = OrderItemData.builder()
                 .productId(1L)
                 .name("꿀사과")

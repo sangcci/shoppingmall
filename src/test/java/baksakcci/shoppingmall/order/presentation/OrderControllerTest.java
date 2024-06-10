@@ -1,6 +1,6 @@
 package baksakcci.shoppingmall.order.presentation;
 
-import static baksakcci.shoppingmall.order.fixture.OrderFixtureProvider.주문_정보_생성;
+import static baksakcci.shoppingmall.order.fixture.OrderFixtureProvider.주문서_생성;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
@@ -60,7 +60,7 @@ public class OrderControllerTest {
     void 특정_주문_내역_조회() throws Exception {
         // given
         Long orderId = 1L;
-        when(orderQueryRepository.findById(anyLong())).thenReturn(주문_정보_생성());
+        when(orderQueryRepository.findById(anyLong())).thenReturn(주문서_생성());
 
         // when, then
         mockMvc.perform(
@@ -78,7 +78,7 @@ public class OrderControllerTest {
     @Test
     void 주문_내역_페이지_별_조회() throws Exception {
         // given
-        OrderData orderData = 주문_정보_생성();
+        OrderData orderData = 주문서_생성();
         List<OrderData> orderDatas = new ArrayList<>();
         orderDatas.add(orderData);
         when(orderQueryRepository.findAllByPagination(anyInt(), anyInt())).thenReturn(orderDatas);
