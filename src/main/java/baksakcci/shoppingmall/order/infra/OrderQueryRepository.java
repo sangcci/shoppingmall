@@ -9,8 +9,6 @@ import baksakcci.shoppingmall.order.domain.OrderData;
 import baksakcci.shoppingmall.order.domain.OrderData.OrderItemData;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 public class OrderQueryRepository {
-
-    @PersistenceContext
-    private final EntityManager em;
 
     private final JPAQueryFactory queryFactory;
 
