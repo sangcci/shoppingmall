@@ -23,7 +23,7 @@ public class OrderQueryRepository {
     @Transactional(readOnly = true)
     public OrderData findById(long id) {
         return queryFactory.selectFrom(orderEntity)
-                .join(orderItemEntity).on(orderItemEntity.id.eq(orderEntity.id))
+                .join(orderItemEntity).on(orderEntity.id.eq(orderItemEntity.orderEntity.id))
                 .where(orderEntity.id.eq(id))
                 .transform(groupBy(orderEntity.id).as(Projections.constructor(OrderData.class,
                         orderEntity.id,
