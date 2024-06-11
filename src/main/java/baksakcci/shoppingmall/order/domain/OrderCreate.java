@@ -3,6 +3,7 @@ package baksakcci.shoppingmall.order.domain;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import lombok.Getter;
 public class OrderCreate {
 
     @Valid
+    @NotEmpty(message = "주문 상품 정보가 없습니다. 주문 상품 정보를 입력해주세요.")
     private List<OrderItemCreate> orderItemCreates;
     @NotBlank(message = "주소가 없습니다. 주소를 입력해주세요.")
     private String address;
