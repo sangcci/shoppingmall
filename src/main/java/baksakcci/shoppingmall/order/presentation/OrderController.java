@@ -11,6 +11,7 @@ import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,5 +52,11 @@ public class OrderController {
     public ResponseEntity<Response> cancel(@PathVariable("id") Long id) {
         orderService.cancel(id);
         return ResponseEntity.ok().body(Response.success(200, "주문이 취소되었습니다.", null));
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Response> delete(@PathVariable("id") Long id) {
+        orderService.delete(id);
+        return ResponseEntity.ok().body(Response.success(200, "주문이 삭제되었습니다.", null));
     }
 }

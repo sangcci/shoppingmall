@@ -34,4 +34,9 @@ public class OrderRepositoryImpl implements OrderRepository {
         return orderEntity.toModel(orderItems);
     }
 
+    @Override
+    public void deleteById(long id) {
+        orderItemJpaRepository.deleteAllByOrderEntityId(id);
+        orderJpaRepository.deleteById(id);
+    }
 }

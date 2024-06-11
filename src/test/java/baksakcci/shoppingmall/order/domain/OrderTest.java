@@ -2,34 +2,30 @@ package baksakcci.shoppingmall.order.domain;
 
 import static baksakcci.shoppingmall.order.fixture.OrderFixtureProvider.주문_생성;
 import static baksakcci.shoppingmall.order.fixture.OrderFixtureProvider.주문_생성_배송_중_상태;
-import static baksakcci.shoppingmall.order.fixture.ProductFixtureProvider.상품_생성;
+import static baksakcci.shoppingmall.order.fixture.ProductFixtureProvider.상품_꿀사과_생성;
+import static baksakcci.shoppingmall.order.fixture.ProductFixtureProvider.상품_안창살_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import baksakcci.shoppingmall.catalog.domain.entity.Product;
 import org.junit.jupiter.api.Test;
 
 public class OrderTest {
 
     @Test
     void 올바른_주문정보가_들어오면_주문_객체를_생성한다() {
-        // given
-        Product product = 상품_생성();
-
         // when
-        Order order = 주문_생성(product);
+        Order order = 주문_생성(상품_꿀사과_생성(), 상품_안창살_생성());
 
         // then
         assertThat(order.getOrderItems().get(0).getQty()).isEqualTo(2);
-        assertThat(order.getTotalPrice()).isEqualTo(2000 * 2);
+        assertThat(order.getTotalPrice()).isEqualTo(2000 * 2 + 65000 * 1);
         assertThat(order.getOrderState()).isEqualTo(OrderState.PAYMENT_WAITING);
     }
 
     @Test
     void 주문_상태가_결제_전이라면_주문을_취소한다() {
         // given
-        Product product = 상품_생성();
-        Order order = 주문_생성(product);
+        Order order = 주문_생성(상품_꿀사과_생성(), 상품_안창살_생성());
 
         // when
         order.cancel();
@@ -40,8 +36,7 @@ public class OrderTest {
 
     @Test
     void 주문_상태가_결제_후라면_주문을_취소하지_못한다() {
-        Product product = 상품_생성();
-        Order order = 주문_생성_배송_중_상태(product);
+        Order order = 주문_생성_배송_중_상태(상품_꿀사과_생성(), 상품_안창살_생성());
 
         assertThatThrownBy(order::cancel)
                 .isInstanceOf(IllegalStateException.class);

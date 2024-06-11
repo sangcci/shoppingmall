@@ -9,5 +9,5 @@ public interface OrderItemJpaRepository extends JpaRepository<OrderItemEntity, L
 
     List<OrderItemEntity> findAllByOrderEntityId(long orderEntityId);
     List<OrderItemEntity> findOrderItemEntitiesByOrderEntity(OrderEntity orderEntity);
-
+    void deleteAllByOrderEntityId(long orderEntityId);
 }

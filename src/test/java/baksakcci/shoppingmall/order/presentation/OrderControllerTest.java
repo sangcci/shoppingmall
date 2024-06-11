@@ -1,10 +1,12 @@
 package baksakcci.shoppingmall.order.presentation;
 
+import static baksakcci.shoppingmall.order.fixture.OrderFixtureProvider.주문_상세_정보_생성;
 import static baksakcci.shoppingmall.order.fixture.OrderFixtureProvider.주문서_생성;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -15,7 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import baksakcci.shoppingmall.order.application.port.OrderService;
 import baksakcci.shoppingmall.order.domain.OrderCreate;
-import baksakcci.shoppingmall.order.domain.OrderCreate.OrderItemCreate;
 import baksakcci.shoppingmall.order.domain.OrderData;
 import baksakcci.shoppingmall.order.infra.OrderQueryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +45,7 @@ public class OrderControllerTest {
     @Test
     void 주문_하기() throws Exception {
         // given
-        OrderCreate orderCreate = orderCreateFixture();
+        OrderCreate orderCreate = 주문서_생성();
         when(orderService.create(orderCreate)).thenReturn(1L);
 
         // when & then
@@ -60,7 +61,7 @@ public class OrderControllerTest {
     void 특정_주문_내역_조회() throws Exception {
         // given
         Long orderId = 1L;
-        when(orderQueryRepository.findById(anyLong())).thenReturn(주문서_생성());
+        when(orderQueryRepository.findById(anyLong())).thenReturn(주문_상세_정보_생성());
 
         // when, then
         mockMvc.perform(
@@ -78,7 +79,7 @@ public class OrderControllerTest {
     @Test
     void 주문_내역_페이지_별_조회() throws Exception {
         // given
-        OrderData orderData = 주문서_생성();
+        OrderData orderData = 주문_상세_정보_생성();
         List<OrderData> orderDatas = new ArrayList<>();
         orderDatas.add(orderData);
         when(orderQueryRepository.findAllByPagination(anyInt(), anyInt())).thenReturn(orderDatas);
@@ -108,20 +109,17 @@ public class OrderControllerTest {
                 ).andDo(print());
     }
 
-    OrderCreate orderCreateFixture() {
-        OrderItemCreate item1 = OrderItemCreate.builder()
-                .productId(1L)
-                .qty(2)
-                .build();
-        ArrayList<OrderItemCreate> items = new ArrayList<>();
-        items.add(item1);
+    @Test
+    void 주문_삭제() throws Exception {
+        Long orderId = 1L;
+        doNothing().when(orderService).delete(anyLong());
 
-        return OrderCreate.builder()
-                .orderItemCreates(items)
-                .address("경기도")
-                .detailAddress("땡땡빌딩 101호")
-                .receiverName("홍길동")
-                .receiverPhoneNumber("010-1234-5678")
-                .build();
+        mockMvc.perform(
+                        delete("/order/" + orderId + "/delete"))
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$.code").value(200)
+                ).andDo(print());
     }
 }

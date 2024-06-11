@@ -4,6 +4,7 @@ import baksakcci.shoppingmall.order.application.port.OrderRepository;
 import baksakcci.shoppingmall.order.domain.Order;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class OrderFakeRepository implements OrderRepository {
 
@@ -30,7 +31,16 @@ public class OrderFakeRepository implements OrderRepository {
 
     @Override
     public Order findById(long id) {
+        Order order = orderStorage.getOrDefault(id, null);
+        if (order == null) {
+            throw new NoSuchElementException();
+        }
         return orderStorage.get(id);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        orderStorage.remove(id);
     }
 
 }

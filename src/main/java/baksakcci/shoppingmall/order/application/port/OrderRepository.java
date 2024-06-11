@@ -8,4 +8,5 @@ public interface OrderRepository {
 
     Order findById(long id);
 
+    void deleteById(long id);
 }
