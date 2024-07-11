@@ -28,7 +28,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order findById(long id) {
-        OrderEntity orderEntity = orderJpaRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        OrderEntity orderEntity = orderJpaRepository.findById(id).orElseThrow(() -> new NoSuchElementException("주문 정보가 존재하지 않습니다."));
         List<OrderItemEntity> orderItemEntities = orderItemJpaRepository.findAllByOrderEntityId(id);
         List<OrderItem> orderItems = orderItemEntities.stream().map(OrderItemEntity::toModel).toList();
         return orderEntity.toModel(orderItems);
@@ -36,6 +36,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public void deleteById(long id) {
+        orderJpaRepository.findById(id).orElseThrow(() -> new NoSuchElementException("주문 정보가 존재하지 않습니다."));
         orderItemJpaRepository.deleteAllByOrderEntityId(id);
         orderJpaRepository.deleteById(id);
     }
