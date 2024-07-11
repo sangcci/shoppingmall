@@ -1,6 +1,5 @@
 package baksakcci.shoppingmall.order.domain;
 
-import java.util.NoSuchElementException;
 import lombok.Builder;
 import lombok.Getter;
 
